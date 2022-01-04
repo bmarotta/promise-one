@@ -1,6 +1,6 @@
 {
   "name": "single-promise",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Resilient singleton promise to make sure it runs once and only once. Differently from most singleton promise implementations it retries if failed.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -37,5 +37,9 @@
     "retry"
   ],
   "author": "Bruno Marotta",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bmarotta/single-promise.git"
+  }
 }
