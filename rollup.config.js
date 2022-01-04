@@ -7,7 +7,7 @@ export default [{
     {
       file: "dist/index.js",
       format: 'cjs',
-      name: "promise-one"  
+      name: "single-promise"  
     },
   ],
   //preserveModules: true, // Uncomment to split in separate files

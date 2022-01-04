@@ -1,5 +1,5 @@
 {
-  "name": "promise-one",
+  "name": "single-promise",
   "version": "0.0.1",
   "description": "Resilient singleton promise to make sure it runs once and only once. Differently from most singleton promise implementations it retries if failed.",
   "main": "./dist/index.js",

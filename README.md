@@ -1,11 +1,11 @@
-# promise-one
+# single-promise
 
 A simple but reliable singleton promise implementation (key-based). Useful when you want to load remote resources only once and wants to make sure that they are successfully executed
 
 ## Installation
 
 ```
-npm install promise-one
+npm install single-promise
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ Each singleton promise is identified by a key. You can call it in different part
 The problem of most singleton promise implementations, is that they assume that things always work. But that's not the case.
 Sometimes things go wrong, mostly on async calls.
 
-PromiseOne solves exactly these cases. It not only implements the singleton promise pattern, but it also makes sure that if the first call fails, the second time you call it, it will try to call the original promise again.
+SinglePromise solves exactly these cases. It not only implements the singleton promise pattern, but it also makes sure that if the first call fails, the second time you call it, it will try to call the original promise again.
 
 It is important to understand that a promise CANNOT be re-executed. That's why when calling promise one, we need to pass a function
 that returns a Promise. It should return each time a new promise.
@@ -24,7 +24,7 @@ that returns a Promise. It should return each time a new promise.
 
 // Assuming that initializeSomething return a promise, the below code will first resolve initializeSomething
 // and then call doSomething
-PromiseOne.resolve("init", () => initializeSomething()).then(() => doSomething());
+SinglePromise.resolve("init", () => initializeSomething()).then(() => doSomething());
 
 (...)
 
@@ -33,7 +33,7 @@ PromiseOne.resolve("init", () => initializeSomething()).then(() => doSomething()
 // 1. initializeSomething is still running. In this case it will wait for it to finish and then run doOtherThing
 // 2. initializeSomething executed successfully. In this case it will execute doOtherThing "immediately"
 // 3. initializeSomething failed. In this case it will execute initializeSomething again and then doOtherThing (if initialize something succeeds)
-PromiseOne.resolve("init", () => initializeSomething()).then(() => doOtherThing());
+SinglePromise.resolve("init", () => initializeSomething()).then(() => doOtherThing());
 
 
 ```
@@ -45,7 +45,7 @@ class MyClass {
     private myLibPromise;
 
     constructor() {
-        PromiseOne.resolve("my-lib", () => this.loadMyLib());
+        SinglePromise.resolve("my-lib", () => this.loadMyLib());
     }
 
     async loadMyLib() {
@@ -53,7 +53,7 @@ class MyClass {
     }
 
     async callMyLib() {
-        await PromiseOne.resolve("my-lib");
+        await SinglePromise.resolve("my-lib");
         // Use my library
     }
 }

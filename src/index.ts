@@ -8,13 +8,13 @@ export enum PromiseStatus {
 interface PromiseReference {
     // The current status
     status: PromiseStatus;
-    // The wrapper promise created by PromiseOne
+    // The wrapper promise created by SinglePromise
     promise: Promise<any>;
     // The function that generates the promise
     function: () => Promise<any>;
 }
 
-export class PromiseOne {
+export class SinglePromise {
     private static _map: { [key: string]: PromiseReference } = {};
 
     /**
@@ -26,16 +26,16 @@ export class PromiseOne {
      */
     static resolve<T>(key: string, p?: () => Promise<T>): Promise<T> {
         // Check if we already know about a promise with this key
-        const existing = PromiseOne._map[key];
+        const existing = SinglePromise._map[key];
         if (existing) {
             if (existing.status == PromiseStatus.Failed) {
                 // We executed it in the past, but it failed. Let's execute again
                 if (!p) {
                     // In case no new function was provided, use the existing one
-                    p = PromiseOne._map[key].function;
+                    p = SinglePromise._map[key].function;
                 }
                 // Delete from the map
-                PromiseOne.reset(key);
+                SinglePromise.reset(key);
             } else {
                 // Return the pending or successfully executed promise
                 return existing.promise;
@@ -47,16 +47,16 @@ export class PromiseOne {
         const result = new Promise<T>((resolve, reject) => {
             p()
                 .then((value: T) => {
-                    PromiseOne._map[key].status = PromiseStatus.Success;
+                    SinglePromise._map[key].status = PromiseStatus.Success;
                     resolve(value);
                 })
                 .catch((reason: any) => {
-                    PromiseOne._map[key].status = PromiseStatus.Failed;
+                    SinglePromise._map[key].status = PromiseStatus.Failed;
                     reject(reason);
                 });
         });
         // Save it in our map
-        PromiseOne._map[key] = {
+        SinglePromise._map[key] = {
             status: PromiseStatus.Pending,
             promise: result,
             function: p
@@ -69,7 +69,7 @@ export class PromiseOne {
      * @param key Promise key
      */
     static reset(key: string) {
-        delete PromiseOne._map[key];
+        delete SinglePromise._map[key];
     }
 
     /**
@@ -78,7 +78,7 @@ export class PromiseOne {
      * @returns The execution status
      */
     static getStatus(key: string): PromiseStatus {
-        const existing = PromiseOne._map[key];
+        const existing = SinglePromise._map[key];
         if (existing) {
             return existing.status;
         }

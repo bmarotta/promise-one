@@ -7,7 +7,7 @@ export default [{
     {
       file: "dist/index.es.js",
       format: "es",
-      name: "promise-one" 
+      name: "single-promise" 
     },
   ],
   external: [
